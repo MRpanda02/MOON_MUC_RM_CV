@@ -57,8 +57,6 @@
 - 13~15行需手动添加OpenCV库到工程中作为子文件(重要)
 - 24~31行为定义的cmakedefine,因为在大风车识别代码中include的message.h用到了termios.h,该文件不支持windows系统,因为其用于linux系统tx2和单片机通信时获得字长,所以在windows上调试时由于不需要通信,将WINDOWS变量设置ON,进行条件编译(同理，在Linux上编译时将30行改为false即可)
 
-![termios](https://gitee.com/moonchodoung/MOON_MUC_RM_CV/blob/main/CBD_RM_CV(V1.0)/source/termios.png)
-
 - 若后续需要更多的条件编译,可以在config/config.hpp.in按第一行的格式进行宏定义,在Cmakelist只需加一个option做选项操作即可
 - 各子文件里的CMakeLists.txt暂时无需做修改。
 
@@ -72,5 +70,3 @@
 
 
 > 如果有找不到libopencv_core.lib等错误,将CMakeLists.txt里手动找的OpenCV静态库地址复制,最后的lib改为bin,加入到系统环境变量即可
-
-![效果图](https://gitee.com/moonchodoung/MOON_MUC_RM_CV/blob/main/CBD_RM_CV(V1.0)/source/%E6%95%88%E6%9E%9C%E5%9B%BE.png)
