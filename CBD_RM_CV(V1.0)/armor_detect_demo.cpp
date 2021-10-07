@@ -44,12 +44,14 @@ int main(int argc, char *argv[])
             bar.box.points(pts);
             drawTetragon(show, pts, cv::Scalar(0, 255, 0));
         }
-
-        auto aimArea = inst.process(frame);
-        if (aimArea.empty())
+        cv::Point2f aimArea[4];
+        inst.process(frame,aimArea);
+        if (!aimArea)
             std::cout << "No target found.\n";
-        else
-            drawTetragon(show, aimArea.data(), cv::Scalar(255, 255, 255));
+        else{
+            drawTetragon(show, aimArea, cv::Scalar(0, 255, 255));
+            
+        }
 
         // for (const auto &armor : inst.getResults())
         // {
