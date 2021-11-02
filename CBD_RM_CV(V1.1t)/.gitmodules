@@ -1,0 +1,6 @@
+[submodule "image"]
+	path = image
+	url = https://github.com/MUC-RM-CV/mindvision-cam-wrapper.git
+[submodule "windmill"]
+	path = windmill
+	url = https://github.com/MUC-RM-CV/windmill-detect.git

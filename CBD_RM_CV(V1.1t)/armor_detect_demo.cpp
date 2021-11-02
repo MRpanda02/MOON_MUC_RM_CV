@@ -38,12 +38,13 @@ int main(int argc, char *argv[])
         cv::Mat show;
         frame.copyTo(show);
         
-        for (const auto &bar : inst.getLightBars())
-        {
-            cv::Point2f pts[4];
-            bar.box.points(pts);
-            drawTetragon(show, pts, cv::Scalar(0, 255, 0));
-        }
+        // for (const auto &bar : inst.getLightBars())
+        // {
+        //     cv::Point2f pts[4];
+        //     bar.box.points(pts);
+        //     drawTetragon(show, pts, cv::Scalar(0, 255, 0));
+        // }
+
         cv::Point2f aimArea[4];
         inst.process(frame,aimArea);
         if (!aimArea)
@@ -53,12 +54,13 @@ int main(int argc, char *argv[])
             
         }
 
-        // for (const auto &armor : inst.getResults())
-        // {
-        //     cv::Point2f pts[4];
-        //     armor.points(pts);
-        //     drawTetragon(show, pts, cv::Scalar(0, 255, 0));
-        // }
+        for (const auto &armor : inst.getResults())
+        {
+            cv::Point2f pts[4];
+            armor.points(pts);
+            drawTetragon(show, pts, cv::Scalar(0, 255, 0));
+        }
+        
         t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
         fps = 1.0 / t;
         sprintf(string, "%.2f", fps);      
@@ -69,7 +71,7 @@ int main(int argc, char *argv[])
             cv::Point(5, 20),           // 文字坐标，以左下角为原点
             cv::FONT_HERSHEY_SIMPLEX,   // 字体类型
             0.5, // 字体大小
-            cv::Scalar(0, 0, 0));       // 字体颜色
+            cv::Scalar(255, 255, 255));       // 字体颜色
             cv::imshow("show", show);
         if (cv::waitKey(30) == 27) break;
     }

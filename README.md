@@ -63,7 +63,7 @@
 # 编译步骤
 
 - 新建build文件夹(名字随意)
-- 进入build文件夹,Windows环境下输入第一次要输入`cmake -DCMAKE_C_COMPILER=/c/msys64/mingw64/bin/gcc.exe -DCMAKE_CXX_COMPILER=/c/msys64/mingw64/bin/g++.exe ..`,两个参数地址为gcc.exe和g++.exe的地址
+- 进入build文件夹,Windows环境下输入第一次要输入`` cmake -G "MinGW Makefiles" ..``
 - 看到Configuring done后输入`make`
 - 完成后文件夹中会出现两个可运行文件,完活。
 
