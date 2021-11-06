@@ -26,7 +26,8 @@ public:
 
     explicit ArmorDetect(Mode m) : mode(m) {}
 
-    void process(const cv::Mat& frame,cv::Point2f aimArea[]) {
+    std::vector<cv::Point2f> process(const cv::Mat& frame,cv::Point2f aimArea[]) {
+        std::vector<cv::Point2f> final;
         if (this->mode == Mode::FIND_RED) {
             // ÐÞ¸Ä
             cv::Mat color = findRedPreprocess(frame);
@@ -51,12 +52,15 @@ public:
             {
                 aimArea[i] = pts[i];
             }
-            std::cout << "( " ;
-            for(int i=0;i<4;i++){
-                std::cout << aimArea[i] << " , ";
-            }
-            std::cout << " ) ";
+            // std::cout << "( " ;
+            // for(int i=0;i<4;i++){
+            //     std::cout << aimArea[i] << " , ";
+            // }
+            // std::cout << " ) ";
+            final = {pts[0],pts[1],pts[2],pts[3]};
+            return final;
         }
+        return final;
     }
 
     void setParams(ArmorDetectParams p) { params = p; }

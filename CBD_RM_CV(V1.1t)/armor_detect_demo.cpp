@@ -1,9 +1,13 @@
 #include "MVCameraInput.h"
 #include "ArmorDetect.h"
 #include "AngleSolve.h"
-#ifdef WINDOWS
 #include "MessageSend.h"
-#endif
+
+std::string to_string(cv::Point2f p) {
+    std::ostringstream oss;
+    oss << "(" << std::setprecision(5) << p.x << "," << p.y << ")";
+    return oss.str();
+}
 
 template<class Iterable>
 static std::string arrayToString(Iterable t) {
@@ -34,12 +38,10 @@ int main(int argc, char *argv[])
     
     AngleSolve solve;
     
-    #ifdef WINDOWS
-        MessageSend send;
-    #endif
+    MessageSend send;
+
     cv::Mat frame;
     cap >> frame;
-    std::vector<cv::Point2f> final;
     int yaw=0;
     int pitch=0;
     std::cout << frame.size();
@@ -70,8 +72,8 @@ int main(int argc, char *argv[])
         // }
 
         cv::Point2f aimArea[4];
-        inst.process(frame,aimArea);
-        if (!aimArea)
+        auto final = inst.process(frame,aimArea);
+        if (final.empty())
             std::cout << "No target found.\n";
         else{
             drawTetragon(show, aimArea, cv::Scalar(0, 255, 255));
@@ -97,23 +99,18 @@ int main(int argc, char *argv[])
             0.5, // 字体大小
             cv::Scalar(255, 255, 255));       // 字体颜色
             cv::imshow("show", show);
-        if (cv::waitKey(30) == 27) break;
         //#ifdef WINDOWS
-            if (!aimArea) {
+            if (final.empty()) {
                 std::cout << "\033[31mNo target found!\033[0m\n";
             }
-            else { 
-                for(int i=0;i<4;i++){
-                    //for(int j=0;j<2;j++){
-                        final[i] = aimArea[i];
-                    //}
-                }
-                std::cout << "aimArea: " << arrayToString(aimArea) << "\n";
+            else {
+                std::cout << "aimArea: " << arrayToString(final) << "\n";
                 auto [yaw, pitch] = solve.getAngle(final);
                 std::cout << yaw << " " << pitch << "\n";
                 send.sendMessage(false, yaw, pitch);
                 std::cout << send.getData() << "\n";
             }
+            if (cv::waitKey(30) == 27) break;
         //#endif
     }
 }

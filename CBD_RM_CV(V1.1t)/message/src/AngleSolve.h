@@ -68,7 +68,15 @@ public:
     auto getAngle(std::vector<cv::Point2f> pts) {
         cv::Mat rVec = cv::Mat::zeros(3, 1, CV_64FC1); // init rVec
         cv::Mat tVec = cv::Mat::zeros(3, 1, CV_64FC1); // init tVec
-
+                // std::vector<cv::Point2f> final;
+                // for(int i=0;i<4;i++){
+                //     //for(int j=0;j<2;j++){
+                //         final[i].x = pts[i].x;
+                //         final[i].y = pts[i].y;
+                //         // std::cout << final[i];
+                //         std::cout << "1" << std::endl;
+                //     //}
+                // }
         cv::solvePnP(BIG_ARMOR_POINTS_3D, pts, cameraMatrix, distortionCoeffs, rVec, tVec);
 
         auto x_pos = tVec.at<double>(0, 0);

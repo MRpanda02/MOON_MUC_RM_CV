@@ -6,9 +6,9 @@
 #include "WindmillDetect.h"
 #include "AngleSolve.h"
 
-#ifdef WINDOWS
+
 #include "MessageSend.h"
-#endif
+
 
 std::string to_string(cv::Point2f p) {
     std::ostringstream oss;
@@ -40,9 +40,7 @@ int main(int argc, char* argv[]) {
 
     AngleSolve solve;
     
-    #ifdef WINDOWS
     MessageSend send;
-    #endif
 
     int structElementSize = 1;
     inst.setElement(getStructuringElement(
