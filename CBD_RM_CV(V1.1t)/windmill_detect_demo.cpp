@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     AngleSolve solve;
     
     #ifdef WINDOWS
-        MessageSend send;
+    MessageSend send;
     #endif
 
     int structElementSize = 1;
@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
         std::cout << "Process taken " << 1000 * (cv::getTickCount() - t) / cv::getTickFrequency() << " ms \n";
         //cv::waitKey(10);
 
-        #ifdef WINDOWS
+        //#ifdef WINDOWS
             if (aimArea.empty()) {
                 std::cout << "\033[31mNo target found!\033[0m\n";
             }
@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
                 send.sendMessage(false, yaw, pitch);
                 std::cout << send.getData() << "\n";
             }
-        #endif
+        //#endif
         video >> frame;
     }
 }

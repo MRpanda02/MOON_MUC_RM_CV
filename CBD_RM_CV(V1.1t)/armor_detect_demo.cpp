@@ -1,9 +1,24 @@
 #include "MVCameraInput.h"
 #include "ArmorDetect.h"
+#include "AngleSolve.h"
+#ifdef WINDOWS
+#include "MessageSend.h"
+#endif
+
+template<class Iterable>
+static std::string arrayToString(Iterable t) {
+    std::string str = "[";
+    for (const auto& val : t) { str += to_string(val) + ", "; }
+    if (str.length() > 2) {
+        str.pop_back();
+        str.pop_back();
+    }
+    return str + "]";
+}
+
 
 int main(int argc, char *argv[])
 {
-
     cv::namedWindow("frame");
     cv::namedWindow("show");
 
@@ -16,8 +31,17 @@ int main(int argc, char *argv[])
     #else
         MVCameraInput cap;
     #endif
+    
+    AngleSolve solve;
+    
+    #ifdef WINDOWS
+        MessageSend send;
+    #endif
     cv::Mat frame;
     cap >> frame;
+    std::vector<cv::Point2f> final;
+    int yaw=0;
+    int pitch=0;
     std::cout << frame.size();
     double fps;
     double t = 0;
@@ -74,5 +98,22 @@ int main(int argc, char *argv[])
             cv::Scalar(255, 255, 255));       // ×ÖÌåÑÕÉ«
             cv::imshow("show", show);
         if (cv::waitKey(30) == 27) break;
+        //#ifdef WINDOWS
+            if (!aimArea) {
+                std::cout << "\033[31mNo target found!\033[0m\n";
+            }
+            else { 
+                for(int i=0;i<4;i++){
+                    //for(int j=0;j<2;j++){
+                        final[i] = aimArea[i];
+                    //}
+                }
+                std::cout << "aimArea: " << arrayToString(aimArea) << "\n";
+                auto [yaw, pitch] = solve.getAngle(final);
+                std::cout << yaw << " " << pitch << "\n";
+                send.sendMessage(false, yaw, pitch);
+                std::cout << send.getData() << "\n";
+            }
+        //#endif
     }
 }
